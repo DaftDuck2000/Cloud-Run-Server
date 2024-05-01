@@ -12,4 +12,15 @@ def get_public_ip():
     except requests.RequestException as e:
         return "Error: {}".format(e)
     
-print(get_public_ip())
+if __name__ == "__main__":
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+     
+    public_ip = get_public_ip()
+    
+    server_socket.bind((public_ip, 8000))
+    
+    server_socket.listen(5)
+    
+    while True:
+        client_socket, client_address = server_socket.accept()
+        print("Connection from:", client_address)
